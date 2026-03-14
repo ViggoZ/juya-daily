@@ -43,6 +43,20 @@ function ArticleH2({ children }: { children?: ReactNode }) {
 
 const mdComponents: Components = {
   h2: ({ children }) => <ArticleH2>{children}</ArticleH2>,
+  p: ({ children }) => {
+    const text = extractText(children);
+    if (/^相关链接[：:]/.test(text.trim())) {
+      return <p className="related-links-label">{children}</p>;
+    }
+    return <p>{children}</p>;
+  },
+  ul: ({ children, node }) => {
+    // Check if the previous sibling is "相关链接："
+    const prev = node?.position ? null : null; // can't rely on AST position
+    // Instead, check via DOM class — the p above will have .related-links-label
+    // We'll use CSS `p.related-links-label + ul` selector
+    return <ul>{children}</ul>;
+  },
 };
 
 function scrollToId(id: string, container?: HTMLElement | null) {
@@ -81,13 +95,14 @@ export function ArticleView({ data, issueId, mainRef }: Props) {
     if (!container) return;
     setShowTop(container.scrollTop > 400);
 
-    // Show title only when the h2 has fully scrolled out of view
+    // Show title only when the h2 has fully scrolled above the container top
+    const containerRect = container.getBoundingClientRect();
     const headings = container.querySelectorAll<HTMLElement>(".article-content h2[id]");
     let active = "";
     for (const h of headings) {
-      // h.offsetTop + h.offsetHeight = bottom of heading
-      // Only show when the heading is completely above the viewport
-      if (h.offsetTop + h.offsetHeight < container.scrollTop) {
+      const hRect = h.getBoundingClientRect();
+      // hRect.bottom < containerRect.top means the heading is completely invisible above
+      if (hRect.bottom < containerRect.top) {
         const text = h.textContent || "";
         active = text.replace(/\s*#\d+\s*/, "").replace(/^\/\/\s*/, "").trim();
       }

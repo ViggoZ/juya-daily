@@ -265,33 +265,37 @@ body { background-color: var(--bg); color: var(--fg); font-family: var(--theme-f
 .article-content a { word-break: break-all; }
 .article-content pre, .article-content code { overflow-x: auto; max-width: 100%; }
 
-/* "相关链接" — h3 + ul merged into a compact card */
-.article-content h3 {
+/* "相关链接" — label + links merged into compact card */
+.article-content .related-links-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--fg-muted);
   margin-bottom: 0;
-}
-.article-content h3 + ul {
   background: var(--tag-bg);
-  border-radius: var(--theme-radius);
-  padding: 0.5rem 0.75rem;
-  margin-top: 0.25rem;
+  border-radius: var(--theme-radius) var(--theme-radius) 0 0;
+  padding: 0.4rem 0.75rem 0.2rem;
+  margin-top: 1.5rem;
+}
+.article-content .related-links-label + ul {
+  background: var(--tag-bg);
+  border-radius: 0 0 var(--theme-radius) var(--theme-radius);
+  padding: 0.2rem 0.75rem 0.4rem;
+  margin-top: 0;
   margin-bottom: 1rem;
 }
-.article-content h3 + ul li {
-  font-size: 0.8rem;
+.article-content .related-links-label + ul li {
+  font-size: 0.75rem;
   line-height: 1.5;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.article-content h3 + ul li:last-child {
-  margin-bottom: 0;
-}
-.article-content h3 + ul li a {
-  font-size: 0.8rem;
+.article-content .related-links-label + ul li a {
+  font-size: 0.75rem;
   color: var(--fg-muted);
 }
-.article-content h3 + ul li a:hover {
+.article-content .related-links-label + ul li a:hover {
   color: var(--accent);
 }
 
