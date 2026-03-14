@@ -36,8 +36,8 @@ function extractText(node: ReactNode): string {
 
 /** Extract #N tag from heading text */
 function extractTag(text: string): { tag: string; clean: string } | null {
-  const m = text.match(/`#(\d+)`/);
-  if (m) return { tag: m[1], clean: text.replace(/\s*`#\d+`\s*/, "").trim() };
+  const m = text.match(/#(\d+)/);
+  if (m) return { tag: m[1], clean: text.replace(/\s*#\d+\s*/, "").trim() };
   return null;
 }
 
