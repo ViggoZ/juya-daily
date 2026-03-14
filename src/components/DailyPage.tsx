@@ -26,7 +26,9 @@ export function DailyPage({
   const [issueId, setIssueId] = useState(initialIssueId);
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [loading, setLoading] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth >= 768 : true
+  );
   const mainRef = useRef<HTMLElement>(null);
 
   const handleSelect = useCallback(async (entry: DailyEntry) => {
