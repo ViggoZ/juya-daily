@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import { DailyEntry } from "@/lib/github";
 
 interface Props {
@@ -10,22 +11,6 @@ interface Props {
   onClose: () => void;
 }
 
-function groupByMonth(entries: DailyEntry[]) {
-  const groups: { label: string; entries: DailyEntry[] }[] = [];
-  let current = "";
-  for (const entry of entries) {
-    const [y, m] = entry.date.split("-");
-    const key = `${y}-${m}`;
-    if (key !== current) {
-      current = key;
-      const monthNames = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
-      groups.push({ label: `${y} ${monthNames[parseInt(m, 10) - 1]}`, entries: [] });
-    }
-    groups[groups.length - 1].entries.push(entry);
-  }
-  return groups;
-}
-
 export function DatePicker({
   entries,
   currentDate,
@@ -33,85 +18,64 @@ export function DatePicker({
   open,
   onClose,
 }: Props) {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e: MouseEvent) {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [open, onClose]);
+
+  // Scroll active item into view when opened
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => {
+        const active = panelRef.current?.querySelector(".date-item-active");
+        active?.scrollIntoView({ block: "center" });
+      }, 50);
+    }
+  }, [open]);
+
   if (!open) return null;
 
-  const groups = groupByMonth(entries);
-
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div
-        className="date-picker-modal relative z-10 w-full max-w-xs overflow-hidden"
-        style={{
-          background: "var(--bg-card)",
-          border: "1px solid var(--border)",
-          borderRadius: "var(--theme-radius)",
-          animation: "fadeInUp 0.2s ease-out",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
-        }}
-      >
-        {/* Header */}
-        <div
-          className="flex items-center justify-between px-4 py-3 border-b"
-          style={{ borderColor: "var(--border)" }}
-        >
-          <span
-            className="text-xs font-semibold"
-            style={{ color: "var(--fg)" }}
-          >
-            选择日期
-          </span>
-          <button
-            onClick={onClose}
-            className="w-6 h-6 flex items-center justify-center rounded-md hover:opacity-70"
-            style={{ color: "var(--fg-muted)" }}
-            aria-label="关闭"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Calendar body */}
-        <div className="p-3 max-h-[60vh] overflow-y-auto">
-          {groups.map((group) => (
-            <div key={group.label} className="mb-4 last:mb-0">
-              <div
-                className="text-[0.65rem] font-semibold uppercase tracking-wider mb-2 px-0.5"
-                style={{ color: "var(--fg-muted)" }}
-              >
-                {group.label}
-              </div>
-              <div className="grid grid-cols-7 gap-1">
-                {group.entries.map((entry) => {
-                  const isActive = entry.date === currentDate;
-                  const d = new Date(entry.date + "T00:00:00");
-                  const day = d.getDate();
-                  const weekday = ["日","一","二","三","四","五","六"][d.getDay()];
-                  return (
-                    <button
-                      key={entry.id}
-                      onClick={() => onSelect(entry)}
-                      className={`date-cell ${isActive ? "date-cell-active" : ""}`}
-                      title={`${entry.date} 周${weekday} 第${entry.id}期`}
-                    >
-                      <span className="date-cell-day">{day}</span>
-                      <span className="date-cell-wd">{weekday}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
+    <div
+      ref={panelRef}
+      className="fixed top-12 right-4 z-[60] w-48 max-h-[70vh] overflow-y-auto"
+      style={{
+        background: "var(--bg-card)",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--theme-radius)",
+        boxShadow: "0 12px 40px rgba(0,0,0,0.12)",
+        animation: "fadeInUp 0.15s ease-out",
+      }}
+    >
+      <div className="p-1">
+        {entries.map((entry) => {
+          const isActive = entry.date === currentDate;
+          const d = new Date(entry.date + "T00:00:00");
+          const weekday = ["日","一","二","三","四","五","六"][d.getDay()];
+          const month = d.getMonth() + 1;
+          const day = d.getDate();
+          return (
+            <button
+              key={entry.id}
+              onClick={() => onSelect(entry)}
+              className={`date-item ${isActive ? "date-item-active" : ""}`}
+            >
+              <span className="date-item-num">
+                {month}.{String(day).padStart(2, "0")}
+              </span>
+              <span className="date-item-wd">周{weekday}</span>
+              <span className="date-item-id">#{entry.id}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
