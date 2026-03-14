@@ -156,27 +156,39 @@ body { background-color: var(--bg); color: var(--fg); font-family: var(--theme-f
    SIDEBAR — per-theme
    ══════════════════════════════════════════ */
 .site-sidebar { background: var(--bg-warm); border-right: 1px solid var(--border); }
-.sidebar-item {
+
+.sidebar-cell {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  gap: 1px;
+}
+.sidebar-cell:hover { background: var(--tag-bg); }
+.sidebar-cell-active { background: var(--accent); }
+.sidebar-cell-active:hover { background: var(--accent-hover); }
+.sidebar-cell-day {
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.sidebar-cell-active .sidebar-cell-day { color: white; }
+.sidebar-cell-weekday {
+  font-size: 0.5rem;
+  color: var(--fg-muted);
   line-height: 1;
 }
-.sidebar-item:hover { background: var(--tag-bg); }
-.sidebar-item-active { background: var(--accent-soft); }
-.sidebar-item-active:hover { background: var(--accent-soft); }
-.sidebar-item-date { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
-.sidebar-item-active .sidebar-item-date { color: var(--accent); }
-.sidebar-item-meta { color: var(--fg-muted); font-size: 0.7rem; }
-.sidebar-item-id { color: var(--fg-muted); font-size: 0.65rem; margin-left: auto; font-variant-numeric: tabular-nums; }
+.sidebar-cell-active .sidebar-cell-weekday { color: rgba(255,255,255,0.75); }
+
 [data-theme="cyber"] .site-sidebar { border-right: 1px solid rgba(0,229,255,0.12); }
-[data-theme="cyber"] .sidebar-item { border-radius: 0; font-family: "JetBrains Mono", monospace; }
-[data-theme="cyber"] .sidebar-item-active { background: rgba(0,229,255,0.06); }
+[data-theme="cyber"] .sidebar-cell { border-radius: 0; }
 [data-theme="botanical"] .site-sidebar { border-right: none; box-shadow: 2px 0 8px rgba(42,60,30,0.04); }
-[data-theme="blueprint"] .sidebar-item { font-family: "IBM Plex Mono", monospace; border-radius: 3px; }
 
 
 /* ══════════════════════════════════════════
