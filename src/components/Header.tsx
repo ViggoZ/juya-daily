@@ -4,8 +4,8 @@ import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
   return (
-    <header className="site-header sticky top-0 z-50">
-      <div className="site-header-inner max-w-3xl mx-auto px-5 h-14 flex items-center justify-between">
+    <header className="site-header sticky top-0 z-50 shrink-0">
+      <div className="max-w-3xl mx-auto px-5 h-14 flex items-center justify-between">
         <a href="/juya-daily" className="flex items-center gap-2.5 no-underline group">
           <span className="site-brand text-lg font-bold tracking-tight">
             橘鸦 AI 日报

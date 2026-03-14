@@ -46,9 +46,10 @@ export function DailyPage({
   }, []);
 
   return (
-    <div className="min-h-dvh" style={{ background: "var(--bg)" }}>
+    <div className="min-h-dvh flex flex-col" style={{ background: "var(--bg)" }}>
       <Header />
-      <div className="flex">
+      {/* Content area below header — fills remaining height */}
+      <div className="flex flex-1 min-h-0">
         <DailySidebar
           entries={entries}
           currentDate={currentDate}
@@ -56,7 +57,7 @@ export function DailyPage({
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
         />
-        <main className="flex-1 min-w-0">
+        <main className="flex-1 min-w-0 overflow-y-auto">
           {loading ? (
             <div className="flex items-center justify-center py-32">
               <div
