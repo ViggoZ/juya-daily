@@ -62,6 +62,7 @@ export function DailyPage({
         <DailySidebar
           entries={entries}
           currentDate={currentDate}
+          currentCover={data.coverImage}
           onSelect={handleSelect}
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}

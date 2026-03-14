@@ -5,6 +5,7 @@ import { DailyEntry } from "@/lib/github";
 interface Props {
   entries: DailyEntry[];
   currentDate?: string;
+  currentCover?: string;
   onSelect: (entry: DailyEntry) => void;
   open: boolean;
   onClose: () => void;
@@ -13,13 +14,13 @@ interface Props {
 export function DailySidebar({
   entries,
   currentDate,
+  currentCover,
   onSelect,
   open,
   onClose,
 }: Props) {
   return (
     <>
-      {/* Mobile overlay */}
       {open && (
         <div
           className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm md:hidden"
@@ -30,17 +31,15 @@ export function DailySidebar({
       <aside
         className={`
           site-sidebar overflow-y-auto transition-all duration-300 ease-out shrink-0
-
           fixed top-0 left-0 z-50 h-dvh w-72
           md:relative md:z-auto md:top-auto md:left-auto md:h-full
-
           ${open
             ? "translate-x-0 md:translate-x-0 md:w-72"
             : "-translate-x-full md:translate-x-0 md:w-0 md:overflow-hidden md:border-r-0"
           }
         `}
       >
-        {/* Mobile: mini header with close button */}
+        {/* Mobile header */}
         <div
           className="md:hidden sticky top-0 z-10 h-14 flex items-center px-5 border-b"
           style={{ background: "var(--bg-warm)", borderColor: "var(--border)" }}
@@ -64,9 +63,8 @@ export function DailySidebar({
           </button>
         </div>
 
-        {/* Content — min-width keeps content from squishing during collapse animation */}
-        <div className="p-4 min-w-[17rem]">
-          <h2 className="sidebar-title text-xs font-semibold uppercase tracking-widest mb-4 hidden md:block">
+        <div className="p-3 min-w-[17rem]">
+          <h2 className="sidebar-title text-xs font-semibold uppercase tracking-widest mb-3 px-1 hidden md:block">
             往期日报
           </h2>
           <div className="sidebar-list space-y-1">
@@ -83,13 +81,24 @@ export function DailySidebar({
                     onSelect(entry);
                     onClose();
                   }}
-                  className={`sidebar-item w-full text-left transition-all duration-200 ${isActive ? "sidebar-item-active" : ""}`}
+                  className={`sidebar-item w-full text-left transition-all duration-200 relative overflow-hidden ${isActive ? "sidebar-item-active" : ""}`}
                 >
-                  <div className="sidebar-item-date text-sm font-medium">
-                    {entry.date}
-                  </div>
-                  <div className="sidebar-item-meta text-xs mt-0.5">
-                    第 {entry.id} 期 · 周{weekday}
+                  {/* Cover image as background for active item */}
+                  {isActive && currentCover && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={currentCover}
+                      alt=""
+                      className="sidebar-cover"
+                    />
+                  )}
+                  <div className="relative z-[1]">
+                    <div className="sidebar-item-date text-sm font-medium">
+                      {entry.date}
+                    </div>
+                    <div className="sidebar-item-meta text-xs mt-0.5">
+                      第 {entry.id} 期 · 周{weekday}
+                    </div>
                   </div>
                 </button>
               );

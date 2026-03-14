@@ -197,14 +197,6 @@ export function ArticleView({ data, issueId, mainRef }: Props) {
         )}
       </div>
 
-      {/* Cover image */}
-      {data.coverImage && (
-        <div className="animate-fade-in-up stagger-2 mb-10 -mx-5 md:mx-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={data.coverImage} alt={data.title} className="w-full cover-image" />
-        </div>
-      )}
-
       {/* Overview */}
       {data.overview.length > 0 && (
         <div className="animate-fade-in-up stagger-3 overview-card p-5 md:p-6 mb-10">
