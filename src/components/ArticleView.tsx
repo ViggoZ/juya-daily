@@ -81,15 +81,15 @@ export function ArticleView({ data, issueId, mainRef }: Props) {
     if (!container) return;
     setShowTop(container.scrollTop > 400);
 
-    // Find the last h2 that scrolled past the top
+    // Show title only when the h2 has fully scrolled out of view
     const headings = container.querySelectorAll<HTMLElement>(".article-content h2[id]");
     let active = "";
     for (const h of headings) {
-      if (h.offsetTop - 60 <= container.scrollTop) {
-        // Get clean title text (strip #N tag)
+      // h.offsetTop + h.offsetHeight = bottom of heading
+      // Only show when the heading is completely above the viewport
+      if (h.offsetTop + h.offsetHeight < container.scrollTop) {
         const text = h.textContent || "";
-        const cleaned = text.replace(/\s*#\d+\s*/, "").replace(/^\/\/\s*/, "").trim();
-        active = cleaned;
+        active = text.replace(/\s*#\d+\s*/, "").replace(/^\/\/\s*/, "").trim();
       }
     }
     setCurrentTitle(active);
