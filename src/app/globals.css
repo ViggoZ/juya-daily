@@ -152,35 +152,7 @@ body { background-color: var(--bg); color: var(--fg); font-family: var(--theme-f
 }
 
 
-/* ══════════════════════════════════════════
-   DATE PICKER DROPDOWN
-   ══════════════════════════════════════════ */
-.date-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: background 0.1s;
-}
-.date-item:hover { background: var(--tag-bg); }
-.date-item-active { background: var(--accent-soft); }
-.date-item-num {
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--fg);
-  min-width: 2.5rem;
-}
-.date-item-active .date-item-num { color: var(--accent); }
-.date-item-wd { color: var(--fg-muted); font-size: 0.7rem; }
-.date-item-id { color: var(--fg-muted); font-size: 0.65rem; margin-left: auto; font-variant-numeric: tabular-nums; }
-
-[data-theme="cyber"] .date-item { border-radius: 0; font-family: "JetBrains Mono", monospace; }
-[data-theme="blueprint"] .date-item { font-family: "IBM Plex Mono", monospace; border-radius: 3px; }
+/* date picker uses inline styles, no extra CSS needed */
 
 
 /* ══════════════════════════════════════════
