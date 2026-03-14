@@ -434,6 +434,38 @@ body {
 
 
 /* ══════════════════════════════════════════
+   TOC FAB + PANEL
+   ══════════════════════════════════════════ */
+.toc-fab {
+  background: var(--accent);
+  color: white;
+  border-radius: 9999px;
+}
+[data-theme="cyber"] .toc-fab {
+  border-radius: 0;
+  box-shadow: 0 0 20px rgba(0,229,255,0.2);
+}
+[data-theme="blueprint"] .toc-fab { border-radius: 4px; }
+[data-theme="dune"] .toc-fab { border-radius: 6px; }
+
+.toc-item {
+  transition: background 0.15s;
+}
+.toc-item:hover {
+  background: var(--accent-soft);
+}
+.toc-item:active {
+  transform: scale(0.98);
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════
    CYBER EFFECTS
    ══════════════════════════════════════════ */
 .cyber-scanline { display: none; }
