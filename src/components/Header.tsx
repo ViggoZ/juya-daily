@@ -1,17 +1,32 @@
 "use client";
 
+import { useEffect, useState, RefObject } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 interface Props {
   sidebarOpen: boolean;
   onToggleSidebar: () => void;
+  mainRef?: RefObject<HTMLElement | null>;
 }
 
-export function Header({ sidebarOpen, onToggleSidebar }: Props) {
+export function Header({ sidebarOpen, onToggleSidebar, mainRef }: Props) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const container = mainRef?.current;
+    if (!container) return;
+    const onScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const max = scrollHeight - clientHeight;
+      setProgress(max > 0 ? scrollTop / max : 0);
+    };
+    container.addEventListener("scroll", onScroll, { passive: true });
+    return () => container.removeEventListener("scroll", onScroll);
+  }, [mainRef]);
+
   return (
     <header className="site-header sticky top-0 z-50 shrink-0">
       <div className="px-5 h-14 flex items-center">
-        {/* Left: sidebar toggle + brand */}
         <div className="flex items-center gap-2">
           <button
             onClick={onToggleSidebar}
@@ -37,12 +52,11 @@ export function Header({ sidebarOpen, onToggleSidebar }: Props) {
             <span className="site-brand text-lg font-bold tracking-tight">
               橘鸦 AI 日报
             </span>
-            <span className="site-badge text-xs font-medium px-1.5 py-0.5">
+            <span className="site-badge text-xs font-medium px-1.5 py-0.5 hidden sm:inline">
               DAILY
             </span>
           </a>
         </div>
-        {/* Right: github + theme */}
         <div className="flex items-center gap-3 ml-auto">
           <a
             href="https://github.com/imjuya/juya-ai-daily"
@@ -58,6 +72,11 @@ export function Header({ sidebarOpen, onToggleSidebar }: Props) {
           <ThemeToggle />
         </div>
       </div>
+      {/* Reading progress bar */}
+      <div
+        className="reading-progress"
+        style={{ transform: `scaleX(${progress})` }}
+      />
     </header>
   );
 }

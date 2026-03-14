@@ -256,7 +256,7 @@ export function ArticleView({ data, issueId, mainRef }: Props) {
       {showTop && (
         <button
           onClick={() => mainRef?.current?.scrollTo({ top: 0, behavior: "smooth" })}
-          className="back-to-top fixed bottom-20 right-6 z-30 w-10 h-10 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+          className="back-to-top fixed bottom-[4.5rem] right-6 z-30 w-10 h-10 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
           style={{ animation: "fadeInUp 0.2s ease-out" }}
           aria-label="回到顶部"
         >
@@ -271,7 +271,7 @@ export function ArticleView({ data, issueId, mainRef }: Props) {
         <>
           <button
             onClick={() => setTocOpen(!tocOpen)}
-            className="toc-fab fixed bottom-6 right-6 z-30 w-12 h-12 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
+            className="toc-fab fixed bottom-6 right-6 z-30 w-10 h-10 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95"
             aria-label="文章目录"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -289,7 +289,7 @@ export function ArticleView({ data, issueId, mainRef }: Props) {
                 onClick={() => setTocOpen(false)}
               />
               <div
-                className="toc-panel fixed bottom-32 right-6 z-50 w-72 max-h-[55vh] overflow-y-auto shadow-2xl"
+                className="toc-panel fixed bottom-[4.5rem] right-6 z-50 w-72 max-h-[55vh] overflow-y-auto shadow-2xl"
                 style={{
                   background: "var(--bg-card)",
                   border: "1px solid var(--border)",

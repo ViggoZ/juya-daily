@@ -130,6 +130,19 @@ body {
   backdrop-filter: blur(var(--theme-header-blur));
   -webkit-backdrop-filter: blur(var(--theme-header-blur));
   border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.reading-progress {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+  will-change: transform;
+  z-index: 1;
 }
 .site-brand {
   font-family: var(--theme-font-display);
@@ -160,6 +173,9 @@ body {
 [data-theme="cyber"] .site-header {
   border-bottom: 1px solid rgba(0,229,255,0.2);
   box-shadow: 0 1px 30px rgba(0,229,255,0.06);
+}
+[data-theme="cyber"] .reading-progress {
+  box-shadow: 0 0 8px rgba(0,229,255,0.5);
 }
 [data-theme="cyber"] .site-brand {
   text-shadow: 0 0 20px rgba(0,229,255,0.3);

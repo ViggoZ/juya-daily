@@ -54,6 +54,7 @@ export function DailyPage({
       <Header
         sidebarOpen={sidebarOpen}
         onToggleSidebar={() => setSidebarOpen((v) => !v)}
+        mainRef={mainRef}
       />
       <div className="flex flex-1 overflow-hidden">
         <DailySidebar
