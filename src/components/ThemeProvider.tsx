@@ -8,7 +8,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     <NextThemeProvider
       attribute="data-theme"
       defaultTheme="editorial"
-      themes={["editorial", "ink", "cyber", "botanical", "dune", "blueprint"]}
+      themes={["editorial", "mono", "dune", "blueprint", "ink", "cyber"]}
       enableSystem={false}
     >
       {children}

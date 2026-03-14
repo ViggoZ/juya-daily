@@ -20,11 +20,11 @@ export const themes: ThemeConfig[] = [
     previewColors: { bg: "#faf8f5", fg: "#1a1a1a", accent: "#c44b2b", card: "#ffffff" },
   },
   {
-    id: "botanical",
-    name: "植物园",
-    nameEn: "Botanical",
-    description: "森林绿意，优雅衬线书籍排版",
-    previewColors: { bg: "#f5f2eb", fg: "#2c3028", accent: "#5a7a4a", card: "#faf8f2" },
+    id: "mono",
+    name: "极简",
+    nameEn: "Mono",
+    description: "纯黑白，系统字体，零装饰",
+    previewColors: { bg: "#ffffff", fg: "#111111", accent: "#111111", card: "#ffffff" },
   },
   {
     id: "dune",
