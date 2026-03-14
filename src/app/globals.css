@@ -265,6 +265,36 @@ body { background-color: var(--bg); color: var(--fg); font-family: var(--theme-f
 .article-content a { word-break: break-all; }
 .article-content pre, .article-content code { overflow-x: auto; max-width: 100%; }
 
+/* "相关链接" — h3 + ul merged into a compact card */
+.article-content h3 {
+  margin-bottom: 0;
+}
+.article-content h3 + ul {
+  background: var(--tag-bg);
+  border-radius: var(--theme-radius);
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+.article-content h3 + ul li {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.article-content h3 + ul li:last-child {
+  margin-bottom: 0;
+}
+.article-content h3 + ul li a {
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+}
+.article-content h3 + ul li a:hover {
+  color: var(--accent);
+}
+
 
 /* ══════════════════════════════════════════════════════════
    ARTICLE CONTENT — PER-THEME TYPOGRAPHY
