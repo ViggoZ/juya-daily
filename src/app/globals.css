@@ -272,14 +272,13 @@ body { background-color: var(--bg); color: var(--fg); font-family: var(--theme-f
   padding: 0.5rem 0.75rem;
   margin: 1rem 0;
 }
-.related-links-card .related-links-label {
-  display: block;
+.related-links-label {
   font-size: 0.7rem;
   font-weight: 600;
   color: var(--fg-muted);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
-.related-links-card a {
+.related-links-list a {
   display: block;
   font-size: 0.7rem;
   line-height: 1.6;
@@ -290,7 +289,7 @@ body { background-color: var(--bg); color: var(--fg); font-family: var(--theme-f
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.related-links-card a:hover {
+.related-links-list a:hover {
   color: var(--accent);
 }
 

@@ -65,28 +65,23 @@ function preprocessRelatedLinks(md: string): string {
 
 const mdComponents: Components = {
   h2: ({ children }) => <ArticleH2>{children}</ArticleH2>,
-  code: ({ className, children }) => {
+  pre: ({ children }) => {
     // Render related-links code blocks as a compact card
-    if (className === "language-related-links") {
-      const urls = String(children).trim().split("\n").filter(Boolean);
+    const child = children as unknown as { props?: { className?: string; children?: string } } | null;
+    if (child?.props?.className === "language-related-links") {
+      const urls = String(child.props.children || "").trim().split("\n").filter(Boolean);
       return (
         <div className="related-links-card">
-          <span className="related-links-label">相关链接</span>
-          {urls.map((url, i) => (
-            <a key={i} href={url} target="_blank" rel="noopener noreferrer">
-              {url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-            </a>
-          ))}
+          <div className="related-links-label">相关链接</div>
+          <div className="related-links-list">
+            {urls.map((url, i) => (
+              <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                {url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+              </a>
+            ))}
+          </div>
         </div>
       );
-    }
-    return <code className={className}>{children}</code>;
-  },
-  pre: ({ children }) => {
-    // Unwrap pre for related-links so the div renders directly
-    const child = children as unknown as { props?: { className?: string } } | null;
-    if (child?.props?.className === "language-related-links") {
-      return <>{children}</>;
     }
     return <pre>{children}</pre>;
   },
