@@ -41,21 +41,54 @@ function ArticleH2({ children }: { children?: ReactNode }) {
   return <h2 id={id} className="scroll-mt-20">{children}</h2>;
 }
 
+/** Pre-process markdown: wrap "相关链接" blocks into a single blockquote-like section */
+function preprocessRelatedLinks(md: string): string {
+  // Pattern: "相关链接：\n- [url](url)\n- [url](url)\n..."
+  return md.replace(
+    /相关链接[：:]\s*\n((?:\s*-\s*\[.*?\]\(.*?\)\s*\n?)+)/g,
+    (_, links: string) => {
+      const urls = links
+        .trim()
+        .split("\n")
+        .map((l: string) => l.trim())
+        .filter((l: string) => l.startsWith("- "))
+        .map((l: string) => {
+          const m = l.match(/\[([^\]]*)\]\(([^)]+)\)/);
+          return m ? m[2] : "";
+        })
+        .filter(Boolean);
+      // Return as a fenced code block with special lang so we can render custom
+      return `\`\`\`related-links\n${urls.join("\n")}\n\`\`\`\n`;
+    }
+  );
+}
+
 const mdComponents: Components = {
   h2: ({ children }) => <ArticleH2>{children}</ArticleH2>,
-  p: ({ children }) => {
-    const text = extractText(children);
-    if (/^相关链接[：:]/.test(text.trim())) {
-      return <p className="related-links-label">{children}</p>;
+  code: ({ className, children }) => {
+    // Render related-links code blocks as a compact card
+    if (className === "language-related-links") {
+      const urls = String(children).trim().split("\n").filter(Boolean);
+      return (
+        <div className="related-links-card">
+          <span className="related-links-label">相关链接</span>
+          {urls.map((url, i) => (
+            <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+              {url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+            </a>
+          ))}
+        </div>
+      );
     }
-    return <p>{children}</p>;
+    return <code className={className}>{children}</code>;
   },
-  ul: ({ children, node }) => {
-    // Check if the previous sibling is "相关链接："
-    const prev = node?.position ? null : null; // can't rely on AST position
-    // Instead, check via DOM class — the p above will have .related-links-label
-    // We'll use CSS `p.related-links-label + ul` selector
-    return <ul>{children}</ul>;
+  pre: ({ children }) => {
+    // Unwrap pre for related-links so the div renders directly
+    const child = children as unknown as { props?: { className?: string } } | null;
+    if (child?.props?.className === "language-related-links") {
+      return <>{children}</>;
+    }
+    return <pre>{children}</pre>;
   },
 };
 
@@ -213,7 +246,7 @@ export function ArticleView({ data, issueId, mainRef }: Props) {
       {/* Article content */}
       <div className="animate-fade-in-up stagger-4 article-content">
         <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-          {data.contentAfterOverview}
+          {preprocessRelatedLinks(data.contentAfterOverview)}
         </ReactMarkdown>
       </div>
 
