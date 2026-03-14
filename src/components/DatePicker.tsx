@@ -67,7 +67,7 @@ export function DatePicker({ entries, currentDate, onSelect, open, onClose }: Pr
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
 
       <div
-        className="relative z-10 w-full max-w-[280px]"
+        className="relative z-10 w-full max-w-[340px]"
         style={{
           background: "var(--bg-card)",
           borderRadius: "12px",
@@ -91,7 +91,7 @@ export function DatePicker({ entries, currentDate, onSelect, open, onClose }: Pr
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
-          <span className="text-sm font-semibold" style={{ color: "var(--fg)" }}>
+          <span className="text-base font-semibold" style={{ color: "var(--fg)" }}>
             {group.year} {monthNames[month - 1]}
           </span>
           <button
@@ -107,11 +107,11 @@ export function DatePicker({ entries, currentDate, onSelect, open, onClose }: Pr
         </div>
 
         {/* Weekday header */}
-        <div className="grid grid-cols-7 px-3 pt-2">
+        <div className="grid grid-cols-7 px-4 pt-2">
           {weekdays.map((w) => (
             <div
               key={w}
-              className="text-center text-[0.6rem] font-medium py-1"
+              className="text-center text-xs font-medium py-1"
               style={{ color: "var(--fg-muted)" }}
             >
               {w}
@@ -120,7 +120,7 @@ export function DatePicker({ entries, currentDate, onSelect, open, onClose }: Pr
         </div>
 
         {/* Days grid */}
-        <div className="grid grid-cols-7 gap-px px-3 pb-3 pt-1">
+        <div className="grid grid-cols-7 gap-0.5 px-4 pb-4 pt-1">
           {/* Empty cells for offset */}
           {Array.from({ length: firstOffset }).map((_, i) => (
             <div key={`empty-${i}`} />
@@ -139,7 +139,7 @@ export function DatePicker({ entries, currentDate, onSelect, open, onClose }: Pr
               return (
                 <div
                   key={day}
-                  className="flex items-center justify-center h-8 text-xs"
+                  className="flex items-center justify-center h-10 text-sm"
                   style={{ color: "var(--border-strong)" }}
                 >
                   {day}
@@ -151,7 +151,7 @@ export function DatePicker({ entries, currentDate, onSelect, open, onClose }: Pr
               <button
                 key={day}
                 onClick={() => onSelect(entry)}
-                className="flex items-center justify-center h-8 text-xs font-medium rounded-md transition-all duration-100 hover:opacity-80 active:scale-90"
+                className="flex items-center justify-center h-10 text-sm font-medium rounded-lg transition-all duration-100 hover:opacity-80 active:scale-90"
                 style={{
                   background: isActive ? "var(--accent)" : "transparent",
                   color: isActive ? "white" : "var(--fg)",
