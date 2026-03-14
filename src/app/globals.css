@@ -233,14 +233,6 @@ body {
   background: var(--bg-warm);
   border-right: 1px solid var(--border);
 }
-@media (min-width: 768px) {
-  .site-sidebar {
-    position: sticky;
-    top: 3.5rem;
-    height: calc(100dvh - 3.5rem);
-    overflow-y: auto;
-  }
-}
 .sidebar-title {
   color: var(--fg-muted);
   font-family: var(--theme-font-display);

@@ -37,7 +37,7 @@ export function DailySidebar({
           fixed top-0 left-0 z-50 h-dvh w-72
           overflow-y-auto transition-transform duration-300 ease-out
           md:relative md:z-auto md:top-auto md:left-auto
-          md:h-auto md:translate-x-0 md:shrink-0
+          md:h-full md:translate-x-0 md:shrink-0
           ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
       >

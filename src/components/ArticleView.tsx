@@ -3,11 +3,12 @@
 import ReactMarkdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ParsedDaily } from "@/lib/github";
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, RefObject } from "react";
 
 interface Props {
   data: ParsedDaily;
   issueId: number;
+  mainRef?: RefObject<HTMLElement | null>;
 }
 
 const categoryIcons: Record<string, string> = {
@@ -58,9 +59,13 @@ const mdComponents: Components = {
   h2: ({ children }) => <ArticleH2>{children}</ArticleH2>,
 };
 
-function scrollToId(id: string) {
+function scrollToId(id: string, container?: HTMLElement | null) {
   const el = document.getElementById(id);
-  if (el) {
+  if (!el) return;
+  if (container) {
+    const top = el.offsetTop - 16;
+    container.scrollTo({ top, behavior: "smooth" });
+  } else {
     el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
@@ -78,7 +83,7 @@ function collectTocItems(data: ParsedDaily) {
   return items;
 }
 
-export function ArticleView({ data, issueId }: Props) {
+export function ArticleView({ data, issueId, mainRef }: Props) {
   const [tocOpen, setTocOpen] = useState(false);
   const d = new Date(data.date + "T00:00:00");
   const weekday = ["日", "一", "二", "三", "四", "五", "六"][d.getDay()];
@@ -173,7 +178,7 @@ export function ArticleView({ data, issueId }: Props) {
                     <li key={idx} className="flex items-start gap-2 text-sm">
                       {item.tag && (
                         <button
-                          onClick={() => scrollToId(`article-${item.tag!.replace("#", "")}`)}
+                          onClick={() => scrollToId(`article-${item.tag!.replace("#", "")}`, mainRef?.current)}
                           className="shrink-0 text-xs font-mono font-medium mt-0.5 px-1.5 py-px item-tag cursor-pointer hover:opacity-80 active:scale-95"
                           title="跳转到此条目"
                         >
@@ -183,7 +188,7 @@ export function ArticleView({ data, issueId }: Props) {
                       <button
                         onClick={() =>
                           item.tag
-                            ? scrollToId(`article-${item.tag.replace("#", "")}`)
+                            ? scrollToId(`article-${item.tag.replace("#", "")}`, mainRef?.current)
                             : undefined
                         }
                         className="text-left cursor-pointer hover:opacity-80"
@@ -284,7 +289,7 @@ export function ArticleView({ data, issueId }: Props) {
                     <button
                       key={item.tag}
                       onClick={() => {
-                        scrollToId(`article-${item.tag}`);
+                        scrollToId(`article-${item.tag}`, mainRef?.current);
                         setTocOpen(false);
                       }}
                       className="toc-item w-full text-left flex items-start gap-2 px-3 py-2 rounded-lg text-sm"

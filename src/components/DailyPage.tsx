@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { DailyEntry, ParsedDaily, parseMarkdown } from "@/lib/github";
 import { Header } from "./Header";
 import { DailySidebar } from "./DailySidebar";
@@ -27,6 +27,7 @@ export function DailyPage({
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
 
   const handleSelect = useCallback(async (entry: DailyEntry) => {
     setLoading(true);
@@ -37,7 +38,7 @@ export function DailyPage({
       setData(parsed);
       setIssueId(entry.id);
       setCurrentDate(entry.date);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       console.error("Failed to load:", err);
     } finally {
@@ -46,10 +47,13 @@ export function DailyPage({
   }, []);
 
   return (
-    <div className="min-h-dvh flex flex-col" style={{ background: "var(--bg)" }}>
+    <div
+      className="h-dvh flex flex-col overflow-hidden"
+      style={{ background: "var(--bg)" }}
+    >
       <Header />
-      {/* Content area below header — fills remaining height */}
-      <div className="flex flex-1 min-h-0">
+      {/* Below header: sidebar + main, both independently scrollable */}
+      <div className="flex flex-1 overflow-hidden">
         <DailySidebar
           entries={entries}
           currentDate={currentDate}
@@ -57,7 +61,10 @@ export function DailyPage({
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
         />
-        <main className="flex-1 min-w-0 overflow-y-auto">
+        <main
+          ref={mainRef}
+          className="flex-1 min-w-0 overflow-y-auto"
+        >
           {loading ? (
             <div className="flex items-center justify-center py-32">
               <div
@@ -69,7 +76,7 @@ export function DailyPage({
               />
             </div>
           ) : (
-            <ArticleView data={data} issueId={issueId} />
+            <ArticleView data={data} issueId={issueId} mainRef={mainRef} />
           )}
         </main>
       </div>
