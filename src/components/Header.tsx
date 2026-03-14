@@ -2,19 +2,48 @@
 
 import { ThemeToggle } from "./ThemeToggle";
 
-export function Header() {
+interface Props {
+  sidebarOpen: boolean;
+  onToggleSidebar: () => void;
+}
+
+export function Header({ sidebarOpen, onToggleSidebar }: Props) {
   return (
     <header className="site-header sticky top-0 z-50 shrink-0">
-      <div className="max-w-3xl mx-auto px-5 h-14 flex items-center justify-between">
-        <a href="/juya-daily" className="flex items-center gap-2.5 no-underline group">
-          <span className="site-brand text-lg font-bold tracking-tight">
-            橘鸦 AI 日报
-          </span>
-          <span className="site-badge text-xs font-medium px-1.5 py-0.5">
-            DAILY
-          </span>
-        </a>
-        <div className="flex items-center gap-3">
+      <div className="px-5 h-14 flex items-center">
+        {/* Left: sidebar toggle + brand */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onToggleSidebar}
+            className="sidebar-toggle w-8 h-8 flex items-center justify-center rounded-lg hover:opacity-80 active:scale-95 shrink-0"
+            style={{ color: "var(--fg-muted)" }}
+            aria-label={sidebarOpen ? "收起侧栏" : "展开侧栏"}
+          >
+            {sidebarOpen ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="9" y1="3" x2="9" y2="21" />
+                <polyline points="14 9 11 12 14 15" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="9" y1="3" x2="9" y2="21" />
+                <polyline points="13 9 16 12 13 15" />
+              </svg>
+            )}
+          </button>
+          <a href="/juya-daily" className="flex items-center gap-2 no-underline">
+            <span className="site-brand text-lg font-bold tracking-tight">
+              橘鸦 AI 日报
+            </span>
+            <span className="site-badge text-xs font-medium px-1.5 py-0.5">
+              DAILY
+            </span>
+          </a>
+        </div>
+        {/* Right: github + theme */}
+        <div className="flex items-center gap-3 ml-auto">
           <a
             href="https://github.com/imjuya/juya-ai-daily"
             target="_blank"

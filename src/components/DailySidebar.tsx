@@ -27,27 +27,23 @@ export function DailySidebar({
         />
       )}
 
-      {/* Sidebar
-        - Mobile: fixed overlay covering full height including navbar area
-        - PC: static in flex layout, own scrollbar, never collapses
-      */}
       <aside
         className={`
-          site-sidebar
+          site-sidebar overflow-y-auto transition-all duration-300 ease-out shrink-0
+
           fixed top-0 left-0 z-50 h-dvh w-72
-          overflow-y-auto transition-transform duration-300 ease-out
-          md:relative md:z-auto md:top-auto md:left-auto
-          md:h-full md:translate-x-0 md:shrink-0
-          ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+          md:relative md:z-auto md:top-auto md:left-auto md:h-full
+
+          ${open
+            ? "translate-x-0 md:translate-x-0 md:w-72"
+            : "-translate-x-full md:translate-x-0 md:w-0 md:overflow-hidden md:border-r-0"
+          }
         `}
       >
-        {/* Mobile: show a mini header inside sidebar */}
+        {/* Mobile: mini header with close button */}
         <div
           className="md:hidden sticky top-0 z-10 h-14 flex items-center px-5 border-b"
-          style={{
-            background: "var(--bg-warm)",
-            borderColor: "var(--border)",
-          }}
+          style={{ background: "var(--bg-warm)", borderColor: "var(--border)" }}
         >
           <span
             className="text-sm font-semibold"
@@ -68,8 +64,8 @@ export function DailySidebar({
           </button>
         </div>
 
-        <div className="p-4">
-          {/* PC: show title */}
+        {/* Content — min-width keeps content from squishing during collapse animation */}
+        <div className="p-4 min-w-[17rem]">
           <h2 className="sidebar-title text-xs font-semibold uppercase tracking-widest mb-4 hidden md:block">
             往期日报
           </h2>

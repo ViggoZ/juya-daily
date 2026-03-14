@@ -26,7 +26,7 @@ export function DailyPage({
   const [issueId, setIssueId] = useState(initialIssueId);
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [loading, setLoading] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const mainRef = useRef<HTMLElement>(null);
 
   const handleSelect = useCallback(async (entry: DailyEntry) => {
@@ -51,8 +51,10 @@ export function DailyPage({
       className="h-dvh flex flex-col overflow-hidden"
       style={{ background: "var(--bg)" }}
     >
-      <Header />
-      {/* Below header: sidebar + main, both independently scrollable */}
+      <Header
+        sidebarOpen={sidebarOpen}
+        onToggleSidebar={() => setSidebarOpen((v) => !v)}
+      />
       <div className="flex flex-1 overflow-hidden">
         <DailySidebar
           entries={entries}
@@ -80,19 +82,6 @@ export function DailyPage({
           )}
         </main>
       </div>
-
-      <button
-        onClick={() => setSidebarOpen(true)}
-        className="site-fab fixed bottom-6 left-6 z-30 w-12 h-12 flex items-center justify-center shadow-lg md:hidden hover:scale-110 active:scale-95"
-        aria-label="打开日报列表"
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="7" height="7" />
-          <rect x="14" y="3" width="7" height="7" />
-          <rect x="14" y="14" width="7" height="7" />
-          <rect x="3" y="14" width="7" height="7" />
-        </svg>
-      </button>
     </div>
   );
 }
