@@ -434,6 +434,23 @@ body {
 
 
 /* ══════════════════════════════════════════
+   BACK TO TOP
+   ══════════════════════════════════════════ */
+.back-to-top {
+  background: var(--bg-card);
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+}
+.back-to-top:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+[data-theme="cyber"] .back-to-top { border-radius: 0; box-shadow: 0 0 12px rgba(0,229,255,0.1); }
+[data-theme="blueprint"] .back-to-top { border-radius: 4px; }
+[data-theme="dune"] .back-to-top { border-radius: 6px; }
+
+/* ══════════════════════════════════════════
    TOC FAB + PANEL
    ══════════════════════════════════════════ */
 .toc-fab {
