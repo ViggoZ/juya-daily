@@ -96,8 +96,10 @@ function scrollToId(id: string, container?: HTMLElement | null) {
   const el = document.getElementById(id);
   if (!el) return;
   if (container) {
-    const top = el.offsetTop - 16;
-    container.scrollTo({ top, behavior: "smooth" });
+    const containerRect = container.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const offset = elRect.top - containerRect.top + container.scrollTop - 16;
+    container.scrollTo({ top: offset, behavior: "smooth" });
   } else {
     el.scrollIntoView({ behavior: "smooth", block: "start" });
   }

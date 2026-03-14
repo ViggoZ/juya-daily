@@ -271,28 +271,24 @@ body { background-color: var(--bg); color: var(--fg); font-family: var(--theme-f
   border-radius: var(--theme-radius);
   padding: 0.5rem 0.75rem;
   margin: 1rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.15rem 0.5rem;
 }
 .related-links-card .related-links-label {
+  display: block;
   font-size: 0.7rem;
   font-weight: 600;
   color: var(--fg-muted);
-  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
 }
 .related-links-card a {
+  display: block;
   font-size: 0.7rem;
-  line-height: 1.4;
+  line-height: 1.6;
   color: var(--fg-muted);
-  text-decoration: none;
+  text-decoration: none !important;
   border: none !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
-  display: block;
 }
 .related-links-card a:hover {
   color: var(--accent);
