@@ -108,12 +108,13 @@
 /* ══════════════════════════════════════════
    GLOBAL BASE
    ══════════════════════════════════════════ */
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   background-color: var(--bg);
   color: var(--fg);
   font-family: var(--theme-font-body);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 ::selection { background-color: var(--theme-selection-bg); color: var(--theme-selection-fg); }
 ::-webkit-scrollbar { width: 6px; }
@@ -515,6 +516,27 @@ body {
 .overview-title { color: var(--fg-muted); }
 [data-theme="blueprint"] .overview-title { font-family: "IBM Plex Mono", monospace; color: var(--accent); }
 
+
+/* ══════════════════════════════════════════════════════════
+   ARTICLE CONTENT — overflow guard
+   ══════════════════════════════════════════════════════════ */
+.article-content {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
+}
+.article-content img {
+  max-width: 100%;
+  height: auto;
+}
+.article-content a {
+  word-break: break-all;
+}
+.article-content pre,
+.article-content code {
+  overflow-x: auto;
+  max-width: 100%;
+}
 
 /* ══════════════════════════════════════════════════════════
    ARTICLE CONTENT — PER-THEME TYPOGRAPHY

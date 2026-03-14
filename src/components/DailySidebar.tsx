@@ -30,8 +30,8 @@ export function DailySidebar({
           site-sidebar
           fixed top-14 left-0 z-40 h-[calc(100dvh-3.5rem)] w-72
           overflow-y-auto transition-transform duration-300 ease-out
-          md:sticky md:translate-x-0 md:block
-          ${open ? "translate-x-0" : "-translate-x-full"}
+          md:sticky md:top-14 md:h-[calc(100dvh-3.5rem)] md:translate-x-0
+          ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
       >
         <div className="p-4">
