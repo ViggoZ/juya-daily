@@ -10,7 +10,6 @@ interface Props {
   onClose: () => void;
 }
 
-/** Group entries by year-month */
 function groupByMonth(entries: DailyEntry[]) {
   const groups: { label: string; entries: DailyEntry[] }[] = [];
   let current = "";
@@ -27,46 +26,50 @@ function groupByMonth(entries: DailyEntry[]) {
   return groups;
 }
 
-export function DailySidebar({
+export function DatePicker({
   entries,
   currentDate,
   onSelect,
   open,
   onClose,
 }: Props) {
+  if (!open) return null;
+
   const groups = groupByMonth(entries);
 
   return (
-    <>
-      {open && (
-        <div
-          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm md:hidden"
-          onClick={onClose}
-        />
-      )}
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
-      <aside
-        className={`
-          site-sidebar overflow-y-auto transition-all duration-300 ease-out shrink-0
-          fixed top-0 left-0 z-50 h-dvh w-52
-          md:relative md:z-auto md:top-auto md:left-auto md:h-full
-          ${open
-            ? "translate-x-0 md:translate-x-0 md:w-52"
-            : "-translate-x-full md:translate-x-0 md:w-0 md:overflow-hidden md:border-r-0"
-          }
-        `}
+      {/* Modal */}
+      <div
+        className="date-picker-modal relative z-10 w-full max-w-xs overflow-hidden"
+        style={{
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--theme-radius)",
+          animation: "fadeInUp 0.2s ease-out",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+        }}
       >
-        {/* Mobile header */}
+        {/* Header */}
         <div
-          className="md:hidden sticky top-0 z-10 h-12 flex items-center px-4 border-b"
-          style={{ background: "var(--bg-warm)", borderColor: "var(--border)" }}
+          className="flex items-center justify-between px-4 py-3 border-b"
+          style={{ borderColor: "var(--border)" }}
         >
-          <span className="text-xs font-medium" style={{ color: "var(--fg-muted)" }}>
+          <span
+            className="text-xs font-semibold"
+            style={{ color: "var(--fg)" }}
+          >
             选择日期
           </span>
           <button
             onClick={onClose}
-            className="ml-auto w-7 h-7 flex items-center justify-center rounded-md hover:opacity-70"
+            className="w-6 h-6 flex items-center justify-center rounded-md hover:opacity-70"
             style={{ color: "var(--fg-muted)" }}
             aria-label="关闭"
           >
@@ -77,16 +80,17 @@ export function DailySidebar({
           </button>
         </div>
 
-        <div className="p-3 min-w-[12rem]">
+        {/* Calendar body */}
+        <div className="p-3 max-h-[60vh] overflow-y-auto">
           {groups.map((group) => (
-            <div key={group.label} className="mb-4">
+            <div key={group.label} className="mb-4 last:mb-0">
               <div
-                className="text-[0.65rem] font-semibold uppercase tracking-wider mb-2 px-1"
+                className="text-[0.65rem] font-semibold uppercase tracking-wider mb-2 px-0.5"
                 style={{ color: "var(--fg-muted)" }}
               >
                 {group.label}
               </div>
-              <div className="grid grid-cols-5 gap-1">
+              <div className="grid grid-cols-7 gap-1">
                 {group.entries.map((entry) => {
                   const isActive = entry.date === currentDate;
                   const d = new Date(entry.date + "T00:00:00");
@@ -95,14 +99,12 @@ export function DailySidebar({
                   return (
                     <button
                       key={entry.id}
-                      onClick={() => { onSelect(entry); onClose(); }}
-                      className={`sidebar-cell ${isActive ? "sidebar-cell-active" : ""}`}
+                      onClick={() => onSelect(entry)}
+                      className={`date-cell ${isActive ? "date-cell-active" : ""}`}
                       title={`${entry.date} 周${weekday} 第${entry.id}期`}
                     >
-                      <span className="sidebar-cell-day">{day}</span>
-                      <span className="sidebar-cell-weekday">
-                        {weekday}
-                      </span>
+                      <span className="date-cell-day">{day}</span>
+                      <span className="date-cell-wd">{weekday}</span>
                     </button>
                   );
                 })}
@@ -110,7 +112,7 @@ export function DailySidebar({
             </div>
           ))}
         </div>
-      </aside>
-    </>
+      </div>
+    </div>
   );
 }

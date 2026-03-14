@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import { DailyEntry, ParsedDaily, parseMarkdown } from "@/lib/github";
 import { Header } from "./Header";
-import { DailySidebar } from "./DailySidebar";
+import { DatePicker } from "./DatePicker";
 import { ArticleView } from "./ArticleView";
 
 const RAW_BASE =
@@ -26,13 +26,12 @@ export function DailyPage({
   const [issueId, setIssueId] = useState(initialIssueId);
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [loading, setLoading] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(() =>
-    typeof window !== "undefined" ? window.innerWidth >= 768 : true
-  );
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
 
   const handleSelect = useCallback(async (entry: DailyEntry) => {
     setLoading(true);
+    setCalendarOpen(false);
     try {
       const res = await fetch(`${RAW_BASE}/${entry.filename}`);
       const md = await res.text();
@@ -54,37 +53,36 @@ export function DailyPage({
       style={{ background: "var(--bg)" }}
     >
       <Header
-        sidebarOpen={sidebarOpen}
-        onToggleSidebar={() => setSidebarOpen((v) => !v)}
         mainRef={mainRef}
+        currentDate={currentDate}
+        onCalendarToggle={() => setCalendarOpen((v) => !v)}
       />
-      <div className="flex flex-1 overflow-hidden">
-        <DailySidebar
-          entries={entries}
-          currentDate={currentDate}
-          onSelect={handleSelect}
-          open={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-        />
-        <main
-          ref={mainRef}
-          className="flex-1 min-w-0 overflow-y-auto"
-        >
-          {loading ? (
-            <div className="flex items-center justify-center py-32">
-              <div
-                className="w-6 h-6 border-2 rounded-full animate-spin"
-                style={{
-                  borderColor: "var(--border)",
-                  borderTopColor: "var(--accent)",
-                }}
-              />
-            </div>
-          ) : (
-            <ArticleView data={data} issueId={issueId} mainRef={mainRef} />
-          )}
-        </main>
-      </div>
+      <main
+        ref={mainRef}
+        className="flex-1 min-w-0 overflow-y-auto"
+      >
+        {loading ? (
+          <div className="flex items-center justify-center py-32">
+            <div
+              className="w-6 h-6 border-2 rounded-full animate-spin"
+              style={{
+                borderColor: "var(--border)",
+                borderTopColor: "var(--accent)",
+              }}
+            />
+          </div>
+        ) : (
+          <ArticleView data={data} issueId={issueId} mainRef={mainRef} />
+        )}
+      </main>
+
+      <DatePicker
+        entries={entries}
+        currentDate={currentDate}
+        onSelect={handleSelect}
+        open={calendarOpen}
+        onClose={() => setCalendarOpen(false)}
+      />
     </div>
   );
 }
