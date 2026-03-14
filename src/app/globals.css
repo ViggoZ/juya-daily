@@ -129,12 +129,13 @@ body {
   background: color-mix(in srgb, var(--bg) 85%, transparent);
   backdrop-filter: blur(var(--theme-header-blur));
   -webkit-backdrop-filter: blur(var(--theme-header-blur));
-  border-bottom: 1px solid var(--border);
+  border-bottom: none;
   position: relative;
+  box-shadow: 0 1px 0 var(--border);
 }
 .reading-progress {
   position: absolute;
-  bottom: -1px;
+  bottom: 0;
   left: 0;
   width: 100%;
   height: 2px;
@@ -155,23 +156,18 @@ body {
 }
 .site-github-link { color: var(--fg-muted); }
 
-/* Editorial: warm bottom accent */
-[data-theme="editorial"] .site-header {
-  border-bottom: 2px solid var(--accent);
-}
+/* Editorial */
 
-/* Ink: subtle glow bottom */
+/* Ink */
 [data-theme="ink"] .site-header {
-  border-bottom-color: var(--border);
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 [data-theme="ink"] .site-brand {
   letter-spacing: 0.02em;
 }
 
-/* Cyber: neon bottom line + glow */
+/* Cyber */
 [data-theme="cyber"] .site-header {
-  border-bottom: 1px solid rgba(0,229,255,0.2);
   box-shadow: 0 1px 30px rgba(0,229,255,0.06);
 }
 [data-theme="cyber"] .reading-progress {
@@ -190,9 +186,8 @@ body {
   font-size: 0.65rem;
 }
 
-/* Botanical: no bottom border, shadow instead */
+/* Botanical */
 [data-theme="botanical"] .site-header {
-  border-bottom: none;
   box-shadow: 0 2px 12px rgba(42,60,30,0.05);
 }
 [data-theme="botanical"] .site-brand {
@@ -207,7 +202,6 @@ body {
 
 /* Dune: warm amber underline, sand tones */
 [data-theme="dune"] .site-header {
-  border-bottom: 2px solid var(--accent);
   background: color-mix(in srgb, var(--bg) 90%, transparent);
 }
 [data-theme="dune"] .site-brand {
@@ -223,7 +217,6 @@ body {
 
 /* Blueprint: thin precise border, structured */
 [data-theme="blueprint"] .site-header {
-  border-bottom: 1px solid var(--border);
   background: color-mix(in srgb, var(--bg) 92%, transparent);
 }
 [data-theme="blueprint"] .site-brand {
